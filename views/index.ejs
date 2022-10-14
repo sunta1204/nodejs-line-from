@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Meta Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '805455757351600');
+            fbq('track', 'PageView');
+        </script>
+    <!-- End Meta Pixel Code -->
+    </head>
+    <body>
+        <div>
+            <form id="form">
+                <h1>Welcome !</h1><br>
+                <input type="text" name="test1" id="test1"><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <script src="../assets/js/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+            $('#form').submit((e) => {
+                e.preventDefault()
+                console.log('click')
+                fbq('track', 'CompleteRegistration', {
+                    'content_name' : 'submit form',
+                });
+
+                let input = $('#test1').val()
+
+                const data = {
+                    input : input
+                }
+
+                axios.post('/submitform', data)
+                .then((res) => {
+                    console.log(res.data.data)
+                })
+                .catch((err) => {
+                    console.log(err.data.data)
+                })
+            })
+        </script>
+
+    </body>
+</html>
