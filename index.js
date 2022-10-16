@@ -5,8 +5,8 @@ const app = express();
 
 let port = 8080;
 
-app.set('views', __dirname + '/views');
-app.set('vies engine', 'ejs');
+// app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -17,11 +17,11 @@ const request = require('request');
 const thaibulk = require('api')('@thaibulksms/v1.0#1of51jl4qvzac3');
 
 app.get('/', async(req, res) => {
-    res.render('index.ejs')
+    res.render('index')
 })
 
 app.get('/linelogin', async(req, res) => {
-    res.render('linelogin.ejs')
+    res.render('linelogin')
 })
 
 app.post('/submitform', async(req, res) => {
