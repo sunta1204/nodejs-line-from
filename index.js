@@ -16,15 +16,6 @@ const lineNotify = require('line-notify-nodejs')('8nMvVDQOe8EL69tfll9uHj63In4fdh
 const request = require('request');
 const thaibulk = require('api')('@thaibulksms/v1.0#1of51jl4qvzac3');
 
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-puppeteer.use(StealthPlugin());
-const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
-puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
-
-const { Cluster } = require('puppeteer-cluster');
-const {proxyRequest} = require ('puppeteer-proxy')
-
 app.get('/', async(req, res) => {
     res.render('index')
 })
@@ -115,38 +106,38 @@ app.post('/sendphone', async(req, res) => {
 
 app.get('/testapi', async(req, res) => {
 
-    const cluster = await Cluster.launch({
-        puppeteer,
-        concurrency: Cluster.CONCURRENCY_BROWSER,
-        maxConcurrency: 5,
-        monitor : false,
-        puppeteerOptions : {
-            headless: true,
-            executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-            ignoreDefaultArgs: [ '--enable-automation','--window-size=1366,768'],
-            defaultViewport: {width: 1366,height: 768},
-        },
-        timeout : 9999999
-    });
+    // const cluster = await Cluster.launch({
+    //     puppeteer,
+    //     concurrency: Cluster.CONCURRENCY_BROWSER,
+    //     maxConcurrency: 5,
+    //     monitor : false,
+    //     puppeteerOptions : {
+    //         headless: true,
+    //         executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+    //         ignoreDefaultArgs: [ '--enable-automation','--window-size=1366,768'],
+    //         defaultViewport: {width: 1366,height: 768},
+    //     },
+    //     timeout : 9999999
+    // });
 
-    await cluster.queue(async({page}) => {
-        await page.setDefaultTimeout(180000)
-        await page.goto('https://facebook.com/')
-        await page.waitForTimeout(3000)
-        const titlePage = await page.title()
-        console.log(titlePage)
+    // await cluster.queue(async({page}) => {
+    //     await page.setDefaultTimeout(180000)
+    //     await page.goto('https://facebook.com/')
+    //     await page.waitForTimeout(3000)
+    //     const titlePage = await page.title()
+    //     console.log(titlePage)
         
-        res.send({
-            data : titlePage
-        })
-    })
+    //     res.send({
+    //         data : titlePage
+    //     })
+    // })
 
-    cluster.on('taskerror', (err, data) => {
-        console.log(`  Error crawling ${data}: ${err.message}`);
-    });
+    // cluster.on('taskerror', (err, data) => {
+    //     console.log(`  Error crawling ${data}: ${err.message}`);
+    // });
 
-    await cluster.idle();
-    await cluster.close();
+    // await cluster.idle();
+    // await cluster.close();
 
     
 
