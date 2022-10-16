@@ -20,7 +20,6 @@
     "express-session": "^1.17.3",
     "line-login": "^1.0.14",
     "line-notify-nodejs": "^1.0.1",
-    "puppeteer": "^19.0.0",
-    "puppeteer-cluster": "^0.23.0"
+    "puppeteer": "^19.0.0"
   }
 }
