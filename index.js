@@ -106,40 +106,38 @@ app.post('/sendphone', async(req, res) => {
 
 app.get('/testapi', async(req, res) => {
 
-    // const cluster = await Cluster.launch({
-    //     puppeteer,
-    //     concurrency: Cluster.CONCURRENCY_BROWSER,
-    //     maxConcurrency: 5,
-    //     monitor : false,
-    //     puppeteerOptions : {
-    //         headless: true,
-    //         executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-    //         ignoreDefaultArgs: [ '--enable-automation','--window-size=1366,768'],
-    //         defaultViewport: {width: 1366,height: 768},
-    //     },
-    //     timeout : 9999999
-    // });
+    const cluster = await Cluster.launch({
+        puppeteer,
+        concurrency: Cluster.CONCURRENCY_BROWSER,
+        maxConcurrency: 5,
+        monitor : false,
+        puppeteerOptions : {
+            headless: true,
+            executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+            ignoreDefaultArgs: [ '--enable-automation','--window-size=1366,768'],
+            defaultViewport: {width: 1366,height: 768},
+        },
+        timeout : 9999999
+    });
 
-    // await cluster.queue(async({page}) => {
-    //     await page.setDefaultTimeout(180000)
-    //     await page.goto('https://facebook.com/')
-    //     await page.waitForTimeout(3000)
-    //     const titlePage = await page.title()
-    //     console.log(titlePage)
+    await cluster.queue(async({page}) => {
+        await page.setDefaultTimeout(180000)
+        await page.goto('https://facebook.com/')
+        await page.waitForTimeout(3000)
+        const titlePage = await page.title()
+        console.log(titlePage)
         
-    //     res.send({
-    //         data : titlePage
-    //     })
-    // })
+        res.send({
+            data : titlePage
+        })
+    })
 
-    // cluster.on('taskerror', (err, data) => {
-    //     console.log(`  Error crawling ${data}: ${err.message}`);
-    // });
+    cluster.on('taskerror', (err, data) => {
+        console.log(`  Error crawling ${data}: ${err.message}`);
+    });
 
-    // await cluster.idle();
-    // await cluster.close();
-
-    
+    await cluster.idle();
+    await cluster.close();
 
 })
 
