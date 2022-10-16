@@ -5,18 +5,22 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node index.js",
-    "build": "webpack --config webpack.config.js"
+    "dev": "nodemon index.js",
+    "start" : "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "api": "^4.5.2",
     "axios": "^1.1.2",
     "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "line-login": "^1.0.14",
     "line-notify-nodejs": "^1.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "request": "^2.88.2"
   }
 }

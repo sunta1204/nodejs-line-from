@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Meta Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '805455757351600');
+            fbq('track', 'PageView');
+        </script>
+    <!-- End Meta Pixel Code -->
+    </head>
+    <body>
+        <div>
+            <!-- <form id="form">
+                <h1>Welcome !</h1><br>
+                <input type="text" name="test1" id="test1"><br>
+                <button type="submit">Submit</button>
+            </form> -->
+            <h2>*login ผ่านไลน์ แล้วอย่าลืมเพิ่ม line @ เพื่อรับเครดิตฟรีด้วยนะ</h2>
+            <form id="formCreditFree">
+                <p>กรอกเบอร์โทรศัพท์ รับเครดิตฟรีที่นี่ !</p>
+                <input type="text" id="phone" name="phone">
+                <button type="submit">Send OTP</button>
+            </form>
+            
+            <form id="formVerifyOTP">
+                <label>กรอก OTP </label>ref :(<label id="ref"></label>) <br>
+                <input type="hidden" id="token" name="token">
+                <input tyle="text" id="code" name="code">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <script src="../assets/js/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+        <script>
+
+            main()
+
+            $('#formCreditFree').hide()
+            $('#formVerifyOTP').hide()
+
+            async function getUserProfile(){
+                console.log('getUserProfile')
+                const profile = await liff.getProfile()
+                console.log(profile)
+                fbq('track', 'CompleteRegistration', {
+                    'content_name' : 'login line success',
+                });
+                console.log('track')
+                const data = {
+                    userId : profile.userId,
+                    name : profile.displayName
+                }
+                axios.post('/submitform', data)
+                .then((res) => {
+                    console.log(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                console.log(profile)
+            }
+
+            async function main(){
+                console.log('main run')
+                await liff.init({liffId: '1657559376-5NaAajbW'})
+                // if(!liff.isLoggedIn()){
+                //     liff.login({redirectUri : ''})
+                // }
+                if(liff.isLoggedIn()){
+                    console.log('logged')
+                    getUserProfile()
+                    const isFriend = await getFriend()
+                    if(!isFriend){
+                        alert('เพิ่มไลน์แอดเป็นเพื่อน เพื่อรับเครดิตฟรี เมื่อเพิ่มเพื่อนแล้ว รีเฟรชหน้านี้')
+                        window.open('https://page.line.me/?accountId=433iolgw', '_blank');
+                    }else{  
+                        $('#formCreditFree').show()
+                        $('#formVerifyOTP').show()
+                    }    
+                }else{
+                    console.log('go to login')
+                    liff.login({redirectUri : 'https://8375-223-206-222-105.ap.ngrok.io/linelogin'})
+                }
+            }
+
+            async function getFriend(){
+                const friend = await liff.getFriendship()
+                return friend.friendFlag
+            }
+
+            $('#formCreditFree').submit((e) => {
+                e.preventDefault()
+                const data = {
+                    phone : $('#phone').val()
+                }
+                axios.post('/getotp', data)
+                .then((res) => {
+                    console.log(res.data.data)
+                    $('#ref').text(res.data.data.refno)
+                    $('#token').val(res.data.data.token)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            })
+
+            $('#formVerifyOTP').submit((e) => {
+                e.preventDefault()
+                const data = {
+                    code : $('#code').val(),
+                    token: $('#token').val()
+                }
+                axios.post('/verify', data)
+                .then((res) => {
+                    const phone = {
+                        phone : $('#phone').val()
+                    }
+                    axios.post('/sendphone', phone)
+                    .then((res) => {
+                        console.log(res)
+                        alert('success')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        alert('error')
+                    })
+                })
+                .catch((err) => {
+                    alert('err')
+                })
+            })
+        
+        </script>
+
+    </body>
+</html>
