@@ -102,6 +102,12 @@ app.post('/sendphone', async(req, res) => {
     res.send('succes')
 })
 
+app.get('/testapi', async(req, res) => {
+    res.send({
+        data : 'test  api'
+    })
+})
+
 app.listen(port, () => {
     console.log('server running.');
 });
