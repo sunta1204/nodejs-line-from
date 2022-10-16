@@ -16,14 +16,7 @@ const lineNotify = require('line-notify-nodejs')('8nMvVDQOe8EL69tfll9uHj63In4fdh
 const request = require('request');
 const thaibulk = require('api')('@thaibulksms/v1.0#1of51jl4qvzac3');
 
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-puppeteer.use(StealthPlugin());
-const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
-puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
-
-const { Cluster } = require('puppeteer-cluster');
-const {proxyRequest} = require ('puppeteer-proxy')
+const puppeteer = require("puppeteer");
 
 app.get('/', async(req, res) => {
     res.render('index')
